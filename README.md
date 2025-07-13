@@ -1,25 +1,67 @@
-# Hello, world!
+# 🌱 Carbon Tracker
 
-"Hello, world!" projects are a common starting point for developers learning new languages or platforms, as it provides a simple demonstration of how a programming language can be written for an application.
+*Aplikasi tracking jejak karbon harian untuk orang Indonesia*
 
-This application's logic is written in [Motoko](https://internetcomputer.org/docs/motoko/main/getting-started/motoko-introduction), a programming language designed specifically for developing canisters on ICP.
+## 📋 Deskripsi
 
-## Deploying from ICP Ninja
+Carbon Tracker adalah aplikasi web yang membantu kamu memantau jejak karbon dari aktivitas sehari-hari. Dibangun khusus untuk konteks Indonesia dengan memahami kebiasaan dan aktivitas orang Indonesia seperti naik motor, makan warteg, naik ojol, dll.
 
-When viewing this project in ICP Ninja, you can deploy it directly to the mainnet for free by clicking "Run" in the upper right corner. Open this project in ICP Ninja:
+### ✨ Fitur Utama
 
-[![](https://icp.ninja/assets/open.svg)](https://icp.ninja/i?g=https://github.com/DimasAdiNugroho-dryTundra/Carbon-Tracker)
+- 💬 *Input Natural* - Cerita aktivitas dengan bahasa sehari-hari
+- 🧮 *Auto Calculate* - Hitung jejak karbon otomatis  
+- 📊 *Real-time Stats* - Lihat statistik langsung
+- ⚡ *Quick Buttons* - Tombol cepat untuk aktivitas umum
+- 📱 *Responsive* - Berfungsi di desktop dan mobile
+- 🇮🇩 *Indonesia Context* - Disesuaikan dengan aktivitas lokal
+- 💾 *Data Persistence* - Data tersimpan otomatis
 
-## Project structure
+## 🚀 Demo
 
-The `/backend` folder contains the Motoko canister, `app.mo`. The `/frontend` folder contains web assets for the application's user interface. The user interface is written with plain JavaScript, but any frontend framework can be used.
+Coba langsung aplikasinya di: [ICP Ninja](https://icp.ninja/i?s=G6gXJ)
 
-Edit the `mops.toml` file to add [Motoko dependencies](https://mops.one/) to the project.
+## 🛠 Teknologi
 
-## Build and deploy from the command-line
+- *Backend*: Motoko (Internet Computer)
+- *Frontend*: HTML5, CSS3, Vanilla JavaScript
+- *Platform*: Internet Computer Protocol (ICP)
+- *Storage*: Browser LocalStorage + ICP Stable Memory
 
-To migrate your ICP Ninja project off of the web browser and develop it locally, follow these steps. These steps are necessary if you want to deploy this project for long-term, production use on the mainnet.
+## 🎯 Cara Pakai
 
-### 1. Download your project from ICP Ninja using the 'Download files' button on the upper left corner under the pink ninja star icon.
+### 1. Input Aktivitas
+Ceritain aktivitas kamu dengan bahasa natural:
+- "naik motor 10km ke kantor"
+- "makan ayam bakar di warteg"  
+- "nyalain AC 8 jam"
+- "naik grab ke mall"
 
-### 2. Open the `BUILD.md` file for further instructions.
+### 2. Quick Buttons
+Gunakan tombol cepat untuk aktivitas umum:
+- 🏍 Motor 10km
+- 🚗 Mobil 15km  
+- 🛵 Ojol 5km
+- 🍗 Ayam Bakar
+- 🍚 Warteg
+- ❄ AC 8 Jam
+
+### 3. Monitor Progress
+Pantau statistik harian:
+- *Total CO2*: Jumlah emisi hari ini
+- *Aktivitas*: Jumlah aktivitas tercatat
+- *Status*: Indikator level emisi (😊😐😰)
+
+## 📊 Carbon Factors
+
+| Aktivitas | Emisi (kg CO2) | Catatan |
+|-----------|----------------|---------|
+| Motor | 1.2/10km | Base calculation |
+| Mobil | 2.1/10km | Private car |
+| Ojol | 1.5/10km | Motorcycle taxi |
+| Grab Car | 1.8/10km | Car sharing |
+| Angkot | 0.8/10km | Public transport |
+| Kereta | 0.3/10km | Train |
+| Ayam Bakar | 2.5 | Grilled chicken |
+| Warteg | 2.0 | Local restaurant |
+| Vegetarian | 1.2 | Plant-based meal |
+| AC | 0.8/jam | Air conditioning |
