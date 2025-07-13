@@ -1,0 +1,465 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>🌱 Carbon Tracker</title>
+    <style>
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        body { 
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            min-height: 100vh;
+            padding: 20px;
+        }
+        
+        .container { 
+            max-width: 800px; 
+            margin: 0 auto; 
+            background: white;
+            border-radius: 15px;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.2);
+            overflow: hidden;
+        }
+        
+        .header { 
+            background: linear-gradient(135deg, #28a745, #20c997);
+            color: white; 
+            padding: 30px 20px; 
+            text-align: center; 
+        }
+        
+        .header h1 { margin-bottom: 10px; font-size: 28px; }
+        .header p { font-size: 16px; opacity: 0.9; }
+        
+        .stats-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 20px;
+            padding: 20px;
+            background: #f8f9fa;
+        }
+        
+        .stat-card {
+            background: white;
+            padding: 20px;
+            border-radius: 10px;
+            text-align: center;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+        }
+        
+        .stat-number {
+            font-size: 32px;
+            font-weight: bold;
+            color: #28a745;
+            margin-bottom: 5px;
+        }
+        
+        .stat-label {
+            color: #6c757d;
+            font-size: 14px;
+        }
+        
+        .input-section {
+            padding: 30px 20px;
+            background: white;
+        }
+        
+        .input-title {
+            font-size: 20px;
+            margin-bottom: 15px;
+            color: #343a40;
+        }
+        
+        .input-examples {
+            background: #e9ecef;
+            padding: 15px;
+            border-radius: 10px;
+            margin-bottom: 20px;
+            font-size: 14px;
+            color: #6c757d;
+        }
+        
+        .input-group {
+            display: flex;
+            gap: 10px;
+            margin-bottom: 20px;
+        }
+        
+        .input-group input {
+            flex: 1;
+            padding: 15px;
+            border: 2px solid #dee2e6;
+            border-radius: 10px;
+            font-size: 16px;
+            outline: none;
+            transition: border-color 0.3s;
+        }
+        
+        .input-group input:focus {
+            border-color: #28a745;
+        }
+        
+        .btn {
+            padding: 15px 30px;
+            border: none;
+            border-radius: 10px;
+            font-size: 16px;
+            font-weight: bold;
+            cursor: pointer;
+            transition: all 0.3s;
+        }
+        
+        .btn-primary {
+            background: #28a745;
+            color: white;
+        }
+        
+        .btn-primary:hover {
+            background: #218838;
+            transform: translateY(-2px);
+        }
+        
+        .btn-secondary {
+            background: #6c757d;
+            color: white;
+        }
+        
+        .btn-secondary:hover {
+            background: #5a6268;
+        }
+        
+        .quick-buttons {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
+            gap: 10px;
+            margin-bottom: 20px;
+        }
+        
+        .quick-btn {
+            padding: 12px;
+            background: #e9ecef;
+            border: 1px solid #dee2e6;
+            border-radius: 8px;
+            cursor: pointer;
+            text-align: center;
+            font-size: 14px;
+            transition: all 0.3s;
+        }
+        
+        .quick-btn:hover {
+            background: #28a745;
+            color: white;
+        }
+        
+        .activities-section {
+            padding: 20px;
+            background: #f8f9fa;
+        }
+        
+        .activities-title {
+            font-size: 18px;
+            margin-bottom: 15px;
+            color: #343a40;
+        }
+        
+        .activity-item {
+            background: white;
+            padding: 15px;
+            border-radius: 8px;
+            margin-bottom: 10px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+        }
+        
+        .activity-desc {
+            flex: 1;
+            font-size: 14px;
+            color: #495057;
+        }
+        
+        .activity-carbon {
+            font-weight: bold;
+            color: #dc3545;
+            font-size: 16px;
+        }
+        
+        .loading {
+            text-align: center;
+            padding: 20px;
+            color: #6c757d;
+        }
+        
+        .success-message {
+            background: #d4edda;
+            color: #155724;
+            padding: 15px;
+            border-radius: 8px;
+            margin: 10px 0;
+            border: 1px solid #c3e6cb;
+        }
+        
+        .error-message {
+            background: #f8d7da;
+            color: #721c24;
+            padding: 15px;
+            border-radius: 8px;
+            margin: 10px 0;
+            border: 1px solid #f5c6cb;
+        }
+        
+        @media (max-width: 768px) {
+            .container { margin: 10px; }
+            .stats-grid { grid-template-columns: 1fr; }
+            .input-group { flex-direction: column; }
+            .quick-buttons { grid-template-columns: 1fr; }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <!-- Header -->
+        <div class="header">
+            <h1>🌱 Carbon Tracker</h1>
+            <p>Pantau jejak karbon kamu setiap hari</p>
+        </div>
+        
+        <!-- Stats -->
+        <div class="stats-grid">
+            <div class="stat-card">
+                <div class="stat-number" id="daily-carbon">0</div>
+                <div class="stat-label">kg CO2 Hari Ini</div>
+            </div>
+            <div class="stat-card">
+                <div class="stat-number" id="activity-count">0</div>
+                <div class="stat-label">Aktivitas Tercatat</div>
+            </div>
+            <div class="stat-card">
+                <div class="stat-number" id="carbon-status">😊</div>
+                <div class="stat-label">Status Emisi</div>
+            </div>
+        </div>
+        
+        <!-- Input Section -->
+        <div class="input-section">
+            <h2 class="input-title">Tambah Aktivitas</h2>
+            
+            <div class="input-examples">
+                <strong>Contoh:</strong> "naik motor 10km", "makan ayam bakar", "nyalain AC 8 jam", "naik grab ke mall"
+            </div>
+            
+            <div class="input-group">
+                <input 
+                    type="text" 
+                    id="activity-input" 
+                    placeholder="Ceritain aktivitas kamu hari ini..."
+                    onkeypress="handleKeyPress(event)"
+                >
+                <button class="btn btn-primary" onclick="addActivity()">
+                    Tambah
+                </button>
+            </div>
+            
+            <div class="quick-buttons">
+                <div class="quick-btn" onclick="quickAdd('naik motor 10km')">🏍️ Motor 10km</div>
+                <div class="quick-btn" onclick="quickAdd('naik mobil 15km')">🚗 Mobil 15km</div>
+                <div class="quick-btn" onclick="quickAdd('naik ojol 5km')">🛵 Ojol 5km</div>
+                <div class="quick-btn" onclick="quickAdd('makan ayam bakar')">🍗 Ayam Bakar</div>
+                <div class="quick-btn" onclick="quickAdd('makan warteg')">🍚 Warteg</div>
+                <div class="quick-btn" onclick="quickAdd('nyalain AC 8 jam')">❄️ AC 8 Jam</div>
+                <div class="quick-btn" onclick="quickAdd('naik kereta')">🚊 Kereta</div>
+                <div class="quick-btn" onclick="quickAdd('makan vegetarian')">🥗 Vegetarian</div>
+            </div>
+            
+            <div style="text-align: center;">
+                <button class="btn btn-secondary" onclick="resetDaily()">
+                    Reset Hari Ini
+                </button>
+            </div>
+        </div>
+        
+        <!-- Activities List -->
+        <div class="activities-section">
+            <h3 class="activities-title">Aktivitas Hari Ini</h3>
+            <div id="activities-list">
+                <div class="loading">Memuat aktivitas...</div>
+            </div>
+        </div>
+        
+        <!-- Status -->
+        <div id="connection-status" style="padding: 10px; text-align: center; background: #fff3cd; color: #856404;">
+            Menghubungkan ke backend...
+        </div>
+    </div>
+
+    <script>
+        // Simple storage untuk demo (replace dengan ICP backend nanti)
+        let activities = [];
+        let dailyCarbon = 0;
+        
+        // Carbon factors
+        const carbonFactors = {
+            'motor': 1.2,
+            'mobil': 2.1, 
+            'ojol': 1.5,
+            'grab': 1.8,
+            'angkot': 0.8,
+            'busway': 0.4,
+            'kereta': 0.3,
+            'sepeda': 0,
+            'nasi': 1.8,
+            'ayam': 2.5,
+            'warteg': 2.0,
+            'padang': 3.2,
+            'mcd': 4.5,
+            'vegetarian': 1.2,
+            'ac': 6.4, // 8 jam
+            'tv': 1.2,
+            'komputer': 2.4
+        };
+        
+        // Simple carbon calculation
+        function calculateCarbon(text) {
+            let carbon = 0;
+            let foundActivity = '';
+            
+            const lowerText = text.toLowerCase();
+            
+            for (const [key, value] of Object.entries(carbonFactors)) {
+                if (lowerText.includes(key)) {
+                    carbon += value;
+                    foundActivity = key;
+                }
+            }
+            
+            // Extract numbers for distance/duration
+            const kmMatch = lowerText.match(/(\d+)\s*km/);
+            const jamMatch = lowerText.match(/(\d+)\s*jam/);
+            
+            if (kmMatch && (foundActivity === 'motor' || foundActivity === 'mobil' || foundActivity === 'ojol' || foundActivity === 'grab')) {
+                carbon = carbon * parseInt(kmMatch[1]) / 10; // base 10km
+            }
+            
+            if (jamMatch && foundActivity === 'ac') {
+                carbon = 0.8 * parseInt(jamMatch[1]); // per jam
+            }
+            
+            return carbon || 2.0; // default
+        }
+        
+        // Global functions
+        window.addActivity = function() {
+            const input = document.getElementById('activity-input');
+            const activity = input.value.trim();
+            
+            if (!activity) return;
+            
+            const carbon = calculateCarbon(activity);
+            
+            // Add to activities
+            activities.push({
+                description: activity,
+                carbon: carbon,
+                timestamp: Date.now()
+            });
+            
+            dailyCarbon += carbon;
+            
+            input.value = '';
+            showMessage(`✅ ${activity} dicatat! (+${carbon.toFixed(1)} kg CO2)`, 'success');
+            
+            updateUI();
+        };
+        
+        window.quickAdd = function(activity) {
+            document.getElementById('activity-input').value = activity;
+            addActivity();
+        };
+        
+        window.resetDaily = function() {
+            if (!confirm('Yakin mau reset semua aktivitas hari ini?')) return;
+            
+            activities = [];
+            dailyCarbon = 0;
+            showMessage('Data hari ini berhasil direset!', 'success');
+            updateUI();
+        };
+        
+        window.handleKeyPress = function(event) {
+            if (event.key === 'Enter') {
+                addActivity();
+            }
+        };
+        
+        function updateUI() {
+            // Update stats
+            document.getElementById('daily-carbon').textContent = dailyCarbon.toFixed(1);
+            document.getElementById('activity-count').textContent = activities.length;
+            
+            // Update status
+            const statusElement = document.getElementById('carbon-status');
+            const statusLabel = statusElement.parentElement.querySelector('.stat-label');
+            
+            if (dailyCarbon < 5) {
+                statusElement.textContent = '😊';
+                statusLabel.textContent = 'Bagus!';
+            } else if (dailyCarbon < 10) {
+                statusElement.textContent = '😐';
+                statusLabel.textContent = 'Sedang';
+            } else {
+                statusElement.textContent = '😰';
+                statusLabel.textContent = 'Tinggi';
+            }
+            
+            // Update activities list
+            const listElement = document.getElementById('activities-list');
+            
+            if (activities.length === 0) {
+                listElement.innerHTML = '<div class="loading">Belum ada aktivitas hari ini</div>';
+            } else {
+                listElement.innerHTML = activities.map(activity => `
+                    <div class="activity-item">
+                        <div class="activity-desc">${activity.description}</div>
+                        <div class="activity-carbon">+${activity.carbon.toFixed(1)} kg</div>
+                    </div>
+                `).join('');
+            }
+        }
+        
+        function showMessage(message, type) {
+            const existingMessage = document.querySelector('.success-message, .error-message');
+            if (existingMessage) existingMessage.remove();
+            
+            const messageDiv = document.createElement('div');
+            messageDiv.className = type === 'success' ? 'success-message' : 'error-message';
+            messageDiv.textContent = message;
+            
+            const inputSection = document.querySelector('.input-section');
+            inputSection.appendChild(messageDiv);
+            
+            setTimeout(() => messageDiv.remove(), 3000);
+        }
+        
+        // Initialize
+        function init() {
+            updateUI();
+            
+            // Update connection status
+            setTimeout(() => {
+                const statusElement = document.getElementById('connection-status');
+                statusElement.style.background = '#d4edda';
+                statusElement.style.color = '#155724';
+                statusElement.textContent = '✅ Aplikasi siap digunakan! (Mode offline)';
+                
+                setTimeout(() => {
+                    statusElement.style.display = 'none';
+                }, 2000);
+            }, 1000);
+        }
+        
+        init();
+    </script>
+</body>
+</html>
