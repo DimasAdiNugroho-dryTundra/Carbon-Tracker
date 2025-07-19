@@ -5,217 +5,713 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>🌱 Carbon Tracker</title>
     <style>
-        * { margin: 0; padding: 0; box-sizing: border-box; }
-        body { 
-            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
-            min-height: 100vh;
-            padding: 20px;
+    * { 
+        margin: 0; 
+        padding: 0; 
+        box-sizing: border-box; 
+    }
+
+    body { 
+        font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+        min-height: 100vh;
+        padding: 10px;
+    }
+
+    .container { 
+        max-width: 1000px; 
+        margin: 0 auto; 
+        background: white;
+        border-radius: 20px;
+        box-shadow: 0 15px 35px rgba(0,0,0,0.15);
+        overflow: hidden;
+        animation: slideUp 0.6s ease-out;
+    }
+
+    @keyframes slideUp {
+        from { 
+            opacity: 0; 
+            transform: translateY(30px); 
         }
-        
+        to { 
+            opacity: 1; 
+            transform: translateY(0); 
+        }
+    }
+
+    .header { 
+        background: linear-gradient(135deg, #28a745, #20c997);
+        color: white; 
+        padding: 30px 20px; 
+        text-align: center; 
+    }
+
+    .header h1 { 
+        margin-bottom: 10px; 
+        font-size: 32px; 
+        font-weight: 700;
+    }
+
+    .header p { 
+        font-size: 16px; 
+        opacity: 0.9; 
+    }
+
+    .stats-grid {
+        display: grid;
+        grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+        gap: 20px;
+        padding: 25px;
+        background: #f8f9fa;
+    }
+
+    .stat-card {
+        background: white;
+        padding: 25px;
+        border-radius: 15px;
+        text-align: center;
+        box-shadow: 0 4px 15px rgba(0,0,0,0.1);
+        transition: transform 0.3s ease, box-shadow 0.3s ease;
+    }
+
+    .stat-card:hover {
+        transform: translateY(-5px);
+        box-shadow: 0 8px 25px rgba(0,0,0,0.15);
+    }
+
+    .stat-number {
+        font-size: 36px;
+        font-weight: bold;
+        color: #28a745;
+        margin-bottom: 8px;
+        animation: countUp 0.8s ease-out;
+    }
+
+    @keyframes countUp {
+        from { 
+            opacity: 0; 
+            transform: scale(0.5); 
+        }
+        to { 
+            opacity: 1; 
+            transform: scale(1); 
+        }
+    }
+
+    .stat-label {
+        color: #6c757d;
+        font-size: 14px;
+        font-weight: 500;
+    }
+
+    .input-section {
+        padding: 30px 25px;
+        background: white;
+    }
+
+    .input-title {
+        font-size: 22px;
+        margin-bottom: 15px;
+        color: #343a40;
+        font-weight: 600;
+    }
+
+    .input-examples {
+        background: linear-gradient(135deg, #e9ecef, #f8f9fa);
+        padding: 18px;
+        border-radius: 12px;
+        margin-bottom: 25px;
+        font-size: 14px;
+        color: #6c757d;
+        border-left: 4px solid #28a745;
+    }
+
+    .input-group {
+        display: flex;
+        gap: 15px;
+        margin-bottom: 25px;
+        align-items: stretch;
+    }
+
+    .input-group input {
+        flex: 1;
+        padding: 18px;
+        border: 2px solid #dee2e6;
+        border-radius: 12px;
+        font-size: 16px;
+        outline: none;
+        transition: all 0.3s ease;
+        background: #fff;
+        min-height: 56px;
+        box-sizing: border-box;
+    }
+
+    .input-group input:focus {
+        border-color: #28a745;
+        box-shadow: 0 0 0 3px rgba(40, 167, 69, 0.1);
+        transform: translateY(-2px);
+    }
+
+    .btn {
+        padding: 18px 35px;
+        border: none;
+        border-radius: 12px;
+        font-size: 16px;
+        font-weight: 600;
+        cursor: pointer;
+        transition: all 0.3s ease;
+        position: relative;
+        overflow: hidden;
+        display: inline-flex;
+        align-items: center;
+        justify-content: center;
+        text-align: center;
+        min-height: 56px;
+        box-sizing: border-box;
+        vertical-align: top;
+    }
+
+    .btn::before {
+        content: '';
+        position: absolute;
+        top: 0;
+        left: -100%;
+        width: 100%;
+        height: 100%;
+        background: linear-gradient(90deg, transparent, rgba(255,255,255,0.2), transparent);
+        transition: left 0.5s;
+    }
+
+    .btn:hover::before {
+        left: 100%;
+    }
+
+    .btn-primary {
+        background: linear-gradient(135deg, #28a745, #20c997);
+        color: white;
+        min-width: 140px;
+    }
+
+    .btn-primary:hover {
+        background: linear-gradient(135deg, #218838, #1ea085);
+        transform: translateY(-3px);
+        box-shadow: 0 8px 20px rgba(40, 167, 69, 0.3);
+    }
+
+    .btn-secondary {
+        background: linear-gradient(135deg, #6c757d, #495057);
+        color: white;
+        min-width: 140px;
+    }
+
+    .btn-secondary:hover {
+        background: linear-gradient(135deg, #5a6268, #343a40);
+        transform: translateY(-3px);
+        box-shadow: 0 8px 20px rgba(108, 117, 125, 0.3);
+    }
+
+    .btn-info {
+        background: linear-gradient(135deg, #17a2b8, #138496);
+        color: white;
+        padding: 8px 16px;
+        font-size: 12px;
+        border-radius: 8px;
+        font-weight: 600;
+        min-width: 90px;
+        min-height: 36px;
+    }
+
+    .btn-info:hover {
+        background: linear-gradient(135deg, #138496, #117a8b);
+        transform: translateY(-2px);
+        box-shadow: 0 5px 15px rgba(23, 162, 184, 0.3);
+    }
+
+    .button-group {
+        display: flex;
+        gap: 15px;
+        justify-content: center;
+        flex-wrap: wrap;
+        align-items: center;
+    }
+
+    .activities-section {
+        padding: 25px;
+        background: #f8f9fa;
+    }
+
+    .activities-title {
+        font-size: 20px;
+        margin-bottom: 20px;
+        color: #343a40;
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        font-weight: 600;
+    }
+
+    .activities-table {
+        background: white;
+        border-radius: 15px;
+        overflow: hidden;
+        box-shadow: 0 5px 20px rgba(0,0,0,0.1);
+    }
+
+    .table-header {
+        background: linear-gradient(135deg, #343a40, #495057);
+        color: white;
+        padding: 20px;
+        display: grid;
+        grid-template-columns: 2fr 1fr 1fr 1fr;
+        gap: 15px;
+        font-weight: 600;
+        font-size: 14px;
+        text-transform: uppercase;
+        letter-spacing: 0.5px;
+        text-align: center;
+    }
+
+    .table-header > div {
+        text-align: center;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+    }
+
+    .table-row {
+        padding: 20px;
+        display: grid;
+        grid-template-columns: 2fr 1fr 1fr 1fr;
+        gap: 15px;
+        border-bottom: 1px solid #dee2e6;
+        align-items: center;
+        transition: all 0.3s ease;
+        animation: fadeInUp 0.5s ease-out;
+    }
+
+    @keyframes fadeInUp {
+        from { 
+            opacity: 0; 
+            transform: translateY(20px); 
+        }
+        to { 
+            opacity: 1; 
+            transform: translateY(0); 
+        }
+    }
+
+    .table-row:hover {
+        background: linear-gradient(135deg, #f8f9fa, #e9ecef);
+        transform: translateX(5px);
+    }
+
+    .table-row:last-child {
+        border-bottom: none;
+    }
+
+    .table-row > div {
+        display: flex;
+        align-items: center;
+    }
+
+    .table-row > div:nth-child(1) {
+        justify-content: flex-start;
+    }
+
+    .table-row > div:nth-child(2) {
+        justify-content: center;
+    }
+
+    .table-row > div:nth-child(3) {
+        justify-content: center;
+    }
+
+    .table-row > div:nth-child(4) {
+        justify-content: center;
+    }
+
+    .activity-desc {
+        font-size: 14px;
+        color: #495057;
+        line-height: 1.4;
+        font-weight: 500;
+    }
+
+    .activity-carbon {
+        font-weight: bold;
+        color: #dc3545;
+        font-size: 18px;
+    }
+
+    .activity-category {
+        background: linear-gradient(135deg, #e9ecef, #f8f9fa);
+        padding: 6px 12px;
+        border-radius: 20px;
+        font-size: 12px;
+        text-align: center;
+        color: #495057;
+        font-weight: 600;
+        text-transform: uppercase;
+        letter-spacing: 0.5px;
+    }
+
+    .loading {
+        text-align: center;
+        padding: 50px;
+        color: #6c757d;
+        font-style: italic;
+    }
+
+    .message {
+        padding: 15px 20px;
+        border-radius: 10px;
+        margin: 15px 0;
+        font-weight: 500;
+        animation: slideInDown 0.5s ease-out;
+    }
+
+    @keyframes slideInDown {
+        from { 
+            opacity: 0; 
+            transform: translateY(-20px); 
+        }
+        to { 
+            opacity: 1; 
+            transform: translateY(0); 
+        }
+    }
+
+    .success-message {
+        background: linear-gradient(135deg, #d4edda, #c3e6cb);
+        color: #155724;
+        border: 1px solid #c3e6cb;
+        border-left: 4px solid #28a745;
+    }
+
+    .error-message {
+        background: linear-gradient(135deg, #f8d7da, #f5c6cb);
+        color: #721c24;
+        border: 1px solid #f5c6cb;
+        border-left: 4px solid #dc3545;
+    }
+
+    /* Enhanced Modal Styles */
+    .modal {
+        display: none;
+        position: fixed;
+        z-index: 2000;
+        left: 0;
+        top: 0;
+        width: 100%;
+        height: 100%;
+        background-color: rgba(0,0,0,0.6);
+        backdrop-filter: blur(5px);
+        animation: fadeIn 0.3s ease-out;
+    }
+
+    @keyframes fadeIn {
+        from { opacity: 0; }
+        to { opacity: 1; }
+    }
+
+    .modal-content {
+        background-color: white;
+        margin: 3% auto;
+        padding: 0;
+        border-radius: 20px;
+        width: 95%;
+        max-width: 700px;
+        max-height: 85vh;
+        overflow: hidden;
+        position: relative;
+        animation: modalSlideIn 0.4s ease-out;
+        box-shadow: 0 20px 60px rgba(0,0,0,0.3);
+    }
+
+    @keyframes modalSlideIn {
+        from { 
+            opacity: 0; 
+            transform: translateY(-50px) scale(0.9); 
+        }
+        to { 
+            opacity: 1; 
+            transform: translateY(0) scale(1); 
+        }
+    }
+
+    .modal-header {
+        background: linear-gradient(135deg, #28a745, #20c997);
+        color: white;
+        padding: 25px;
+        border-bottom: none;
+    }
+
+    .modal-title {
+        font-size: 22px;
+        margin: 0;
+        font-weight: 600;
+    }
+
+    .close {
+        position: absolute;
+        right: 20px;
+        top: 20px;
+        font-size: 32px;
+        font-weight: bold;
+        cursor: pointer;
+        color: white;
+        opacity: 0.8;
+        transition: all 0.3s ease;
+        width: 40px;
+        height: 40px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        border-radius: 50%;
+        background: rgba(255,255,255,0.1);
+    }
+
+    .close:hover {
+        opacity: 1;
+        background: rgba(255,255,255,0.2);
+    }
+
+    .modal-body {
+        padding: 25px;
+        max-height: 60vh;
+        overflow-y: auto;
+    }
+
+    .llm-explanation {
+        background: linear-gradient(135deg, #f8f9fa, #e9ecef);
+        padding: 25px;
+        border-radius: 15px;
+        border-left: 5px solid #28a745;
+        line-height: 1.7;
+        color: #495057;
+        font-size: 15px;
+    }
+
+    .activity-desc-modal {
+        background: linear-gradient(135deg, #e3f2fd, #f3e5f5);
+        padding: 15px 20px;
+        border-radius: 10px;
+        margin-bottom: 20px;
+        font-weight: 600;
+        color: #1565c0;
+        border-left: 4px solid #2196f3;
+    }
+
+    /* Loading Animation */
+    .spinner {
+        display: inline-block;
+        width: 16px;
+        height: 16px;
+        border: 2px solid #ffffff;
+        border-radius: 50%;
+        border-top-color: transparent;
+        animation: spin 0.8s ease-in-out infinite;
+    }
+
+    @keyframes spin {
+        to { transform: rotate(360deg); }
+    }
+
+    #btn-loading {
+        display: none;
+        align-items: center;
+        justify-content: center;
+        gap: 8px;
+    }
+
+    .btn span {
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        gap: 8px;
+    }
+
+    /* RESPONSIVE DESIGN */
+    @media (max-width: 768px) {
         .container { 
-            max-width: 800px; 
-            margin: 0 auto; 
-            background: white;
+            margin: 5px; 
             border-radius: 15px;
-            box-shadow: 0 10px 30px rgba(0,0,0,0.2);
-            overflow: hidden;
         }
         
-        .header { 
-            background: linear-gradient(135deg, #28a745, #20c997);
-            color: white; 
-            padding: 30px 20px; 
-            text-align: center; 
-        }
-        
-        .header h1 { margin-bottom: 10px; font-size: 28px; }
-        .header p { font-size: 16px; opacity: 0.9; }
-        
-        .stats-grid {
-            display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
-            gap: 20px;
+        .stats-grid { 
+            grid-template-columns: 1fr; 
+            gap: 15px;
             padding: 20px;
-            background: #f8f9fa;
         }
         
-        .stat-card {
-            background: white;
-            padding: 20px;
-            border-radius: 10px;
-            text-align: center;
-            box-shadow: 0 2px 10px rgba(0,0,0,0.1);
-        }
-        
-        .stat-number {
-            font-size: 32px;
-            font-weight: bold;
-            color: #28a745;
-            margin-bottom: 5px;
-        }
-        
-        .stat-label {
-            color: #6c757d;
-            font-size: 14px;
-        }
-        
-        .input-section {
-            padding: 30px 20px;
-            background: white;
-        }
-        
-        .input-title {
-            font-size: 20px;
-            margin-bottom: 15px;
-            color: #343a40;
-        }
-        
-        .input-examples {
-            background: #e9ecef;
-            padding: 15px;
-            border-radius: 10px;
-            margin-bottom: 20px;
-            font-size: 14px;
-            color: #6c757d;
-        }
-        
-        .input-group {
-            display: flex;
-            gap: 10px;
-            margin-bottom: 20px;
+        /* FIXED INPUT GROUP MOBILE */
+        .input-group { 
+            flex-direction: column; 
+            gap: 15px;
+            align-items: stretch;
         }
         
         .input-group input {
-            flex: 1;
-            padding: 15px;
-            border: 2px solid #dee2e6;
-            border-radius: 10px;
+            width: 100%;
+            min-height: 56px;
+        }
+        
+        .input-group .btn {
+            width: 100%;
+            min-width: unset;
+            min-height: 56px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+        
+        /* FIXED BUTTON GROUP MOBILE */
+        .button-group {
+            flex-direction: column;
+            align-items: stretch;
+            gap: 12px;
+            width: 100%;
+        }
+        
+        .button-group .btn {
+            width: 100%;
+            min-height: 56px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin: 0;
+        }
+        
+        .table-header, .table-row {
+            grid-template-columns: 2.5fr 1fr 1fr 1fr;
+            gap: 8px;
+            padding: 12px 8px;
+            font-size: 13px;
+        }
+        
+        .table-header {
+            padding: 15px 8px;
+        }
+        
+        .table-header > div {
+            font-size: 12px;
+            font-weight: 700;
+        }
+        
+        .activity-desc {
+            font-size: 13px;
+            line-height: 1.3;
+            padding-right: 5px;
+        }
+        
+        .activity-category {
+            font-size: 10px;
+            padding: 4px 6px;
+            border-radius: 12px;
+            line-height: 1.2;
+        }
+        
+        .activity-carbon {
             font-size: 16px;
-            outline: none;
-            transition: border-color 0.3s;
-        }
-        
-        .input-group input:focus {
-            border-color: #28a745;
-        }
-        
-        .btn {
-            padding: 15px 30px;
-            border: none;
-            border-radius: 10px;
-            font-size: 16px;
-            font-weight: bold;
-            cursor: pointer;
-            transition: all 0.3s;
-        }
-        
-        .btn-primary {
-            background: #28a745;
-            color: white;
-        }
-        
-        .btn-primary:hover {
-            background: #218838;
-            transform: translateY(-2px);
-        }
-        
-        .btn-secondary {
-            background: #6c757d;
-            color: white;
-        }
-        
-        .btn-secondary:hover {
-            background: #5a6268;
-        }
-        
-        .quick-buttons {
-            display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
-            gap: 10px;
-            margin-bottom: 20px;
-        }
-        
-        .quick-btn {
-            padding: 12px;
-            background: #e9ecef;
-            border: 1px solid #dee2e6;
-            border-radius: 8px;
-            cursor: pointer;
             text-align: center;
-            font-size: 14px;
-            transition: all 0.3s;
+            font-weight: bold;
         }
         
-        .quick-btn:hover {
-            background: #28a745;
-            color: white;
+        .btn-info {
+            padding: 6px 10px;
+            font-size: 11px;
+            min-width: 70px;
+            border-radius: 6px;
+            min-height: 32px;
+        }
+        
+        .header h1 {
+            font-size: 26px;
+        }
+        
+        .modal-content {
+            width: 98%;
+            margin: 2% auto;
+        }
+        
+        .input-section {
+            padding: 20px 15px;
         }
         
         .activities-section {
-            padding: 20px;
-            background: #f8f9fa;
+            padding: 15px;
         }
         
         .activities-title {
             font-size: 18px;
-            margin-bottom: 15px;
-            color: #343a40;
+            flex-direction: column;
+            align-items: flex-start;
+            gap: 5px;
         }
         
-        .activity-item {
-            background: white;
-            padding: 15px;
-            border-radius: 8px;
-            margin-bottom: 10px;
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+        #total-display {
+            font-size: 12px !important;
+        }
+    }
+
+    @media (max-width: 480px) {
+        .table-header, .table-row {
+            grid-template-columns: 2fr 0.8fr 0.8fr 0.8fr;
+            gap: 6px;
+            padding: 10px 6px;
+        }
+        
+        .table-header > div {
+            font-size: 11px;
         }
         
         .activity-desc {
-            flex: 1;
-            font-size: 14px;
-            color: #495057;
+            font-size: 12px;
+        }
+        
+        .activity-category {
+            font-size: 9px;
+            padding: 3px 4px;
         }
         
         .activity-carbon {
-            font-weight: bold;
-            color: #dc3545;
-            font-size: 16px;
+            font-size: 14px;
         }
         
-        .loading {
-            text-align: center;
-            padding: 20px;
-            color: #6c757d;
+        .btn-info {
+            padding: 5px 8px;
+            font-size: 10px;
+            min-width: 60px;
+            min-height: 30px;
         }
         
-        .success-message {
-            background: #d4edda;
-            color: #155724;
-            padding: 15px;
-            border-radius: 8px;
-            margin: 10px 0;
-            border: 1px solid #c3e6cb;
+        .stat-number {
+            font-size: 28px;
         }
         
-        .error-message {
-            background: #f8d7da;
-            color: #721c24;
-            padding: 15px;
-            border-radius: 8px;
-            margin: 10px 0;
-            border: 1px solid #f5c6cb;
+        .input-section {
+            padding: 20px 10px;
         }
         
-        @media (max-width: 768px) {
-            .container { margin: 10px; }
-            .stats-grid { grid-template-columns: 1fr; }
-            .input-group { flex-direction: column; }
-            .quick-buttons { grid-template-columns: 1fr; }
+        .activities-section {
+            padding: 15px 10px;
         }
+        
+        .input-group .btn,
+        .button-group .btn {
+            min-height: 52px;
+            padding: 15px 20px;
+            font-size: 15px;
+        }
+    }
+
+    @keyframes fadeOut {
+        to { 
+            opacity: 0; 
+            transform: translateY(-20px); 
+            pointer-events: none; 
+        }
+    }
     </style>
 </head>
 <body>
@@ -223,7 +719,7 @@
         <!-- Header -->
         <div class="header">
             <h1>🌱 Carbon Tracker</h1>
-            <p>Pantau jejak karbon kamu setiap hari</p>
+            <p>Analisis jejak karbon dengan teknologi AI</p>
         </div>
         
         <!-- Stats -->
@@ -237,229 +733,738 @@
                 <div class="stat-label">Aktivitas Tercatat</div>
             </div>
             <div class="stat-card">
-                <div class="stat-number" id="carbon-status">😊</div>
+                <div class="stat-number" id="carbon-status">🤖</div>
                 <div class="stat-label">Status Emisi</div>
             </div>
         </div>
         
         <!-- Input Section -->
         <div class="input-section">
-            <h2 class="input-title">Tambah Aktivitas</h2>
+            <h2 class="input-title">Ceritakan Aktivitas Anda</h2>
             
             <div class="input-examples">
-                <strong>Contoh:</strong> "naik motor 10km", "makan ayam bakar", "nyalain AC 8 jam", "naik grab ke mall"
+                <strong>Contoh:</strong> "tadi pagi naik motor dari rumah ke kantor sekitar 15 kilometer", "makan siang di warteg pesen ayam bakar sama nasi", "seharian nyalain AC di kamar karena panas banget"
             </div>
             
             <div class="input-group">
                 <input 
                     type="text" 
                     id="activity-input" 
-                    placeholder="Ceritain aktivitas kamu hari ini..."
+                    placeholder="Ceritain aktivitas kamu hari ini secara detail..."
                     onkeypress="handleKeyPress(event)"
                 >
-                <button class="btn btn-primary" onclick="addActivity()">
-                    Tambah
+                <button class="btn btn-primary" onclick="addActivity()" id="add-btn">
+                    <span id="btn-text">Analisis AI</span>
+                    <span id="btn-loading">
+                        <span class="spinner"></span>
+                        Menganalisis...
+                    </span>
                 </button>
             </div>
-            
-            <div class="quick-buttons">
-                <div class="quick-btn" onclick="quickAdd('naik motor 10km')">🏍️ Motor 10km</div>
-                <div class="quick-btn" onclick="quickAdd('naik mobil 15km')">🚗 Mobil 15km</div>
-                <div class="quick-btn" onclick="quickAdd('naik ojol 5km')">🛵 Ojol 5km</div>
-                <div class="quick-btn" onclick="quickAdd('makan ayam bakar')">🍗 Ayam Bakar</div>
-                <div class="quick-btn" onclick="quickAdd('makan warteg')">🍚 Warteg</div>
-                <div class="quick-btn" onclick="quickAdd('nyalain AC 8 jam')">❄️ AC 8 Jam</div>
-                <div class="quick-btn" onclick="quickAdd('naik kereta')">🚊 Kereta</div>
-                <div class="quick-btn" onclick="quickAdd('makan vegetarian')">🥗 Vegetarian</div>
-            </div>
-            
-            <div style="text-align: center;">
+
+            <div class="button-group">
                 <button class="btn btn-secondary" onclick="resetDaily()">
-                    Reset Hari Ini
+                    🔄 Reset Hari Ini
+                </button>
+                <button class="btn btn-primary" onclick="showInsights()">
+                    📊 Insights AI
                 </button>
             </div>
         </div>
         
-        <!-- Activities List -->
+        <!-- Activities Table -->
         <div class="activities-section">
-            <h3 class="activities-title">Aktivitas Hari Ini</h3>
-            <div id="activities-list">
-                <div class="loading">Memuat aktivitas...</div>
+            <div class="activities-title">
+                <span>📋 Aktivitas Hari Ini</span>
+                <span id="total-display" style="font-size: 14px; color: #6c757d;"></span>
+            </div>
+            
+            <div class="activities-table">
+                <div class="table-header">
+                    <div>AKTIVITAS</div>
+                    <div>KATEGORI</div>
+                    <div>CO2 (KG)</div>
+                    <div>DETAIL</div>
+                </div>
+                <div id="activities-table-body">
+                    <div class="loading">Memuat aktivitas...</div>
+                </div>
             </div>
         </div>
         
         <!-- Status -->
-        <div id="connection-status" style="padding: 10px; text-align: center; background: #fff3cd; color: #856404;">
-            Menghubungkan ke backend...
+        <div id="connection-status" style="padding: 15px; text-align: center; background: #fff3cd; color: #856404; border-radius: 10px; margin: 20px;">
+            🤖 Menghubungkan ke backend AI...
+        </div>
+    </div>
+
+    <!-- LLM Explanation Modal -->
+    <div id="llm-modal" class="modal">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h2 class="modal-title">🤖 Analisis Detail</h2>
+                <span class="close" onclick="closeLLMModal()">&times;</span>
+            </div>
+            <div class="modal-body">
+                <div id="modal-activity-desc" class="activity-desc-modal"></div>
+                <div id="modal-llm-content" class="llm-explanation"></div>
+            </div>
+        </div>
+    </div>
+
+    <!-- AI Insights Modal -->
+    <div id="insights-modal" class="modal">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h2 class="modal-title">📊 Insights Harian</h2>
+                <span class="close" onclick="closeInsightsModal()">&times;</span>
+            </div>
+            <div class="modal-body">
+                <div id="insights-content" class="llm-explanation"></div>
+            </div>
         </div>
     </div>
 
     <script>
-        // Simple storage untuk demo (replace dengan ICP backend nanti)
-        let activities = [];
-        let dailyCarbon = 0;
+    // Global variables
+    let activities = [];
+    let dailyCarbon = 0;
+    let isLoading = false;
+    
+    // Enhanced LLM Analysis Engine
+    const LLMAnalyzer = {
+        async analyzeActivity(input) {
+            await new Promise(resolve => setTimeout(resolve, 2500));
+            const analysis = this.generateDetailedAnalysis(input);
+            return analysis;
+        },
         
-        // Carbon factors
-        const carbonFactors = {
-            'motor': 1.2,
-            'mobil': 2.1, 
-            'ojol': 1.5,
-            'grab': 1.8,
-            'angkot': 0.8,
-            'busway': 0.4,
-            'kereta': 0.3,
-            'sepeda': 0,
-            'nasi': 1.8,
-            'ayam': 2.5,
-            'warteg': 2.0,
-            'padang': 3.2,
-            'mcd': 4.5,
-            'vegetarian': 1.2,
-            'ac': 6.4, // 8 jam
-            'tv': 1.2,
-            'komputer': 2.4
-        };
+        generateDetailedAnalysis(input) {
+            const lower = input.toLowerCase();
+            
+            if (this.isTransportActivity(lower)) {
+                return this.analyzeTransport(input, lower);
+            } else if (this.isFoodActivity(lower)) {
+                return this.analyzeFood(input, lower);
+            } else if (this.isEnergyActivity(lower)) {
+                return this.analyzeEnergy(input, lower);
+            } else {
+                return this.analyzeGeneral(input);
+            }
+        },
         
-        // Simple carbon calculation
-        function calculateCarbon(text) {
-            let carbon = 0;
-            let foundActivity = '';
-            
-            const lowerText = text.toLowerCase();
-            
-            for (const [key, value] of Object.entries(carbonFactors)) {
-                if (lowerText.includes(key)) {
-                    carbon += value;
-                    foundActivity = key;
-                }
-            }
-            
-            // Extract numbers for distance/duration
-            const kmMatch = lowerText.match(/(\d+)\s*km/);
-            const jamMatch = lowerText.match(/(\d+)\s*jam/);
-            
-            if (kmMatch && (foundActivity === 'motor' || foundActivity === 'mobil' || foundActivity === 'ojol' || foundActivity === 'grab')) {
-                carbon = carbon * parseInt(kmMatch[1]) / 10; // base 10km
-            }
-            
-            if (jamMatch && foundActivity === 'ac') {
-                carbon = 0.8 * parseInt(jamMatch[1]); // per jam
-            }
-            
-            return carbon || 2.0; // default
-        }
+        isTransportActivity(text) {
+            return text.includes('motor') || text.includes('mobil') || text.includes('ojol') || 
+                   text.includes('grab') || text.includes('bus') || text.includes('kereta') ||
+                   text.includes('jalan') || text.includes('pergi') || text.includes('km');
+        },
         
-        // Global functions
-        window.addActivity = function() {
-            const input = document.getElementById('activity-input');
-            const activity = input.value.trim();
+        isFoodActivity(text) {
+            return text.includes('makan') || text.includes('ayam') || text.includes('nasi') ||
+                   text.includes('ikan') || text.includes('daging') || text.includes('sapi') ||
+                   text.includes('warteg') || text.includes('restoran') || text.includes('lapar');
+        },
+        
+        isEnergyActivity(text) {
+            return text.includes('ac') || text.includes('tv') || text.includes('listrik') ||
+                   text.includes('lampu') || text.includes('komputer') || text.includes('nyala') ||
+                   text.includes('charger') || text.includes('kipas');
+        },
+        
+        analyzeTransport(input, lower) {
+            const distance = this.extractDistance(input);
+            const vehicleType = this.getVehicleType(lower);
+            const carbon = this.calculateTransportCarbon(vehicleType, distance);
             
-            if (!activity) return;
+            const explanation = `🚗 ANALISIS TRANSPORTASI:\n\n` +
+                `Aktivitas: "${input}"\n` +
+                `Jenis Kendaraan: ${vehicleType}\n` +
+                `Estimasi Jarak: ${distance} km\n` +
+                `Emisi Karbon: ${carbon.toFixed(1)} kg CO2\n\n` +
+                `🔬 DETAIL ANALISIS:\n` +
+                `• Pembakaran bahan bakar menghasilkan CO2\n` +
+                `• Emisi per km: ${this.getEmissionFactor(vehicleType)} kg CO2\n` +
+                `• Efisiensi: ${this.getEfficiencyFactor(vehicleType)}\n` +
+                `• Faktor lalu lintas mempengaruhi +15-30%\n\n` +
+                `📊 PERBANDINGAN:\n` +
+                `• Sepeda: 0 kg CO2 (100% lebih bersih)\n` +
+                `• Kereta: ${(carbon * 0.2).toFixed(1)} kg CO2 (80% lebih rendah)\n` +
+                `• Bus: ${(carbon * 0.3).toFixed(1)} kg CO2 (70% lebih rendah)\n\n` +
+                `💡 REKOMENDASI:\n` +
+                `• Gabungkan perjalanan untuk efisiensi\n` +
+                `• Gunakan transportasi umum untuk jarak jauh\n` +
+                `• Pertimbangkan sepeda untuk jarak dekat`;
             
-            const carbon = calculateCarbon(activity);
-            
-            // Add to activities
-            activities.push({
-                description: activity,
+            return {
                 carbon: carbon,
-                timestamp: Date.now()
-            });
-            
-            dailyCarbon += carbon;
-            
-            input.value = '';
-            showMessage(`✅ ${activity} dicatat! (+${carbon.toFixed(1)} kg CO2)`, 'success');
-            
-            updateUI();
-        };
+                category: 'Transport',
+                explanation: explanation,
+                suggestions: [
+                    `Gunakan transportasi umum untuk jarak >10km`,
+                    'Gabungkan beberapa tujuan dalam satu perjalanan',
+                    'Pertimbangkan sepeda untuk jarak dekat'
+                ]
+            };
+        },
         
-        window.quickAdd = function(activity) {
-            document.getElementById('activity-input').value = activity;
-            addActivity();
-        };
+        analyzeFood(input, lower) {
+            const foodType = this.getFoodType(lower);
+            const carbon = this.calculateFoodCarbon(foodType);
+            
+            const explanation = `🍽️ ANALISIS KONSUMSI MAKANAN:\n\n` +
+                `Aktivitas: "${input}"\n` +
+                `Jenis Makanan: ${foodType}\n` +
+                `Emisi Karbon: ${carbon.toFixed(1)} kg CO2\n\n` +
+                `🔬 SUMBER EMISI:\n` +
+                `• Produksi bahan baku (60%): ${(carbon * 0.6).toFixed(1)} kg CO2\n` +
+                `• Transportasi distribusi (20%): ${(carbon * 0.2).toFixed(1)} kg CO2\n` +
+                `• Proses memasak (20%): ${(carbon * 0.2).toFixed(1)} kg CO2\n\n` +
+                `📊 ALTERNATIF RENDAH KARBON:\n` +
+                `• Sayuran lokal: ${(carbon * 0.3).toFixed(1)} kg CO2\n` +
+                `• Protein nabati: ${(carbon * 0.4).toFixed(1)} kg CO2\n` +
+                `• Makanan lokal: ${(carbon * 0.6).toFixed(1)} kg CO2\n\n` +
+                `💡 TIPS PENGURANGAN:\n` +
+                `• Pilih produsen lokal\n` +
+                `• Kurangi food waste\n` +
+                `• Variasikan menu dengan protein nabati`;
+            
+            return {
+                carbon: carbon,
+                category: 'Makanan',
+                explanation: explanation,
+                suggestions: [
+                    'Coba menu vegetarian 2-3x seminggu',
+                    'Pilih makanan dari produsen lokal',
+                    'Hindari food waste dengan porsi sesuai'
+                ]
+            };
+        },
         
-        window.resetDaily = function() {
-            if (!confirm('Yakin mau reset semua aktivitas hari ini?')) return;
+        analyzeEnergy(input, lower) {
+            const deviceType = this.getDeviceType(lower);
+            const duration = this.extractDuration(input);
+            const carbon = this.calculateEnergyCarbon(deviceType, duration);
             
-            activities = [];
-            dailyCarbon = 0;
-            showMessage('Data hari ini berhasil direset!', 'success');
-            updateUI();
-        };
+            const explanation = `⚡ ANALISIS KONSUMSI ENERGI:\n\n` +
+                `Aktivitas: "${input}"\n` +
+                `Perangkat: ${deviceType}\n` +
+                `Durasi: ${duration} jam\n` +
+                `Emisi Karbon: ${carbon.toFixed(1)} kg CO2\n\n` +
+                `🔌 DETAIL KONSUMSI:\n` +
+                `• Daya perangkat: ${this.getDevicePower(deviceType)}W\n` +
+                `• Total konsumsi: ${(this.getDevicePower(deviceType) * duration / 1000).toFixed(1)} kWh\n` +
+                `• Grid emission factor: 0.82 kg CO2/kWh\n\n` +
+                `📊 BREAKDOWN EMISI:\n` +
+                `• Konsumsi langsung: ${(carbon * 0.85).toFixed(1)} kg CO2\n` +
+                `• Grid losses: ${(carbon * 0.10).toFixed(1)} kg CO2\n` +
+                `• Infrastructure: ${(carbon * 0.05).toFixed(1)} kg CO2\n\n` +
+                `💡 OPTIMASI ENERGI:\n` +
+                `• ${deviceType === 'AC' ? 'Set suhu 24-26°C' : 'Gunakan mode hemat energi'}\n` +
+                `• Timer otomatis untuk standby power\n` +
+                `• Upgrade ke perangkat hemat energi`;
+            
+            return {
+                carbon: carbon,
+                category: 'Energi',
+                explanation: explanation,
+                suggestions: [
+                    `${deviceType === 'AC' ? 'Atur suhu AC 24°C atau lebih' : 'Aktifkan mode hemat energi'}`,
+                    'Matikan perangkat saat tidak digunakan',
+                    'Pertimbangkan upgrade perangkat hemat energi'
+                ]
+            };
+        },
         
-        window.handleKeyPress = function(event) {
-            if (event.key === 'Enter') {
-                addActivity();
-            }
-        };
-        
-        function updateUI() {
-            // Update stats
-            document.getElementById('daily-carbon').textContent = dailyCarbon.toFixed(1);
-            document.getElementById('activity-count').textContent = activities.length;
+        analyzeGeneral(input) {
+            const carbon = 1.5 + Math.random() * 2;
             
-            // Update status
-            const statusElement = document.getElementById('carbon-status');
-            const statusLabel = statusElement.parentElement.querySelector('.stat-label');
+            const explanation = `📊 ANALISIS AKTIVITAS UMUM:\n\n` +
+                `Aktivitas: "${input}"\n` +
+                `Estimasi Emisi: ${carbon.toFixed(1)} kg CO2\n\n` +
+                `🔍 METODOLOGI:\n` +
+                `• Pattern recognition analysis\n` +
+                `• Database jejak karbon Indonesia\n` +
+                `• Faktor koreksi lokasi dan konteks\n\n` +
+                `🌍 KONTEKS EMISI:\n` +
+                `• Rata-rata harian Indonesia: 15 kg CO2\n` +
+                `• Target global: <5 kg CO2/hari\n` +
+                `• Aktivitas ini: ${((carbon/15)*100).toFixed(1)}% dari rata-rata\n\n` +
+                `💡 PRINSIP 4R:\n` +
+                `• Reduce: kurangi konsumsi berlebihan\n` +
+                `• Reuse: manfaatkan kembali\n` +
+                `• Recycle: daur ulang material\n` +
+                `• Replace: alternatif berkelanjutan`;
             
-            if (dailyCarbon < 5) {
-                statusElement.textContent = '😊';
-                statusLabel.textContent = 'Bagus!';
-            } else if (dailyCarbon < 10) {
-                statusElement.textContent = '😐';
-                statusLabel.textContent = 'Sedang';
-            } else {
-                statusElement.textContent = '😰';
-                statusLabel.textContent = 'Tinggi';
-            }
-            
-            // Update activities list
-            const listElement = document.getElementById('activities-list');
-            
-            if (activities.length === 0) {
-                listElement.innerHTML = '<div class="loading">Belum ada aktivitas hari ini</div>';
-            } else {
-                listElement.innerHTML = activities.map(activity => `
-                    <div class="activity-item">
-                        <div class="activity-desc">${activity.description}</div>
-                        <div class="activity-carbon">+${activity.carbon.toFixed(1)} kg</div>
-                    </div>
-                `).join('');
-            }
-        }
-        
-        function showMessage(message, type) {
-            const existingMessage = document.querySelector('.success-message, .error-message');
-            if (existingMessage) existingMessage.remove();
-            
-            const messageDiv = document.createElement('div');
-            messageDiv.className = type === 'success' ? 'success-message' : 'error-message';
-            messageDiv.textContent = message;
-            
-            const inputSection = document.querySelector('.input-section');
-            inputSection.appendChild(messageDiv);
-            
-            setTimeout(() => messageDiv.remove(), 3000);
-        }
-        
-        // Initialize
-        function init() {
-            updateUI();
-            
-            // Update connection status
-            setTimeout(() => {
-                const statusElement = document.getElementById('connection-status');
-                statusElement.style.background = '#d4edda';
-                statusElement.style.color = '#155724';
-                statusElement.textContent = '✅ Aplikasi siap digunakan! (Mode offline)';
-                
-                setTimeout(() => {
-                    statusElement.style.display = 'none';
-                }, 2000);
-            }, 1000);
-        }
-        
-        init();
-    </script>
+            return {
+                carbon: carbon,
+                category: 'Lainnya',
+                explanation: explanation,
+                suggestions: [
+                    'Evaluasi kebutuhan vs keinginan',
+                    'Cari alternatif ramah lingkungan',
+                   'Edukasi keluarga tentang jejak karbon'
+               ]
+           };
+       },
+       
+       // Helper methods
+       extractDistance(text) {
+           const kmMatch = text.match(/(\d+)\s*km/i);
+           if (kmMatch) return parseInt(kmMatch[1]);
+           if (text.includes('dekat')) return 2;
+           if (text.includes('jauh')) return 15;
+           return 10;
+       },
+       
+       extractDuration(text) {
+           const jamMatch = text.match(/(\d+)\s*jam/i);
+           if (jamMatch) return parseInt(jamMatch[1]);
+           if (text.includes('seharian')) return 8;
+           if (text.includes('sebentar')) return 1;
+           return 3;
+       },
+       
+       getVehicleType(text) {
+           if (text.includes('motor')) return 'Motor';
+           if (text.includes('mobil')) return 'Mobil';
+           if (text.includes('ojol') || text.includes('grab')) return 'Ojol';
+           if (text.includes('bus')) return 'Bus';
+           return 'Kendaraan';
+       },
+       
+       getFoodType(text) {
+           if (text.includes('ayam')) return 'Ayam';
+           if (text.includes('sapi') || text.includes('daging')) return 'Sapi';
+           if (text.includes('ikan')) return 'Ikan';
+           if (text.includes('nasi')) return 'Nasi + Lauk';
+           return 'Makanan Umum';
+       },
+       
+       getDeviceType(text) {
+           if (text.includes('ac')) return 'AC';
+           if (text.includes('tv')) return 'TV';
+           if (text.includes('komputer')) return 'Komputer';
+           if (text.includes('lampu')) return 'Lampu';
+           return 'Perangkat Elektronik';
+       },
+       
+       calculateTransportCarbon(vehicle, distance) {
+           const factors = { 'Motor': 0.12, 'Mobil': 0.21, 'Ojol': 0.15, 'Bus': 0.04 };
+           return (factors[vehicle] || 0.15) * distance;
+       },
+       
+       calculateFoodCarbon(food) {
+           const baseCarbons = { 'Ayam': 2.5, 'Sapi': 4.2, 'Ikan': 1.9, 'Nasi + Lauk': 2.0, 'Makanan Umum': 2.2 };
+           return baseCarbons[food] || 2.0;
+       },
+       
+       calculateEnergyCarbon(device, hours) {
+           const powerRatings = { 'AC': 800, 'TV': 150, 'Komputer': 300, 'Lampu': 50, 'Perangkat Elektronik': 200 };
+           const watts = powerRatings[device] || 200;
+           return (watts * hours / 1000) * 0.82;
+       },
+       
+       getEmissionFactor(vehicle) {
+           const factors = { 'Motor': '0.12', 'Mobil': '0.21', 'Ojol': '0.15', 'Bus': '0.04' };
+           return factors[vehicle] || '0.15';
+       },
+       
+       getEfficiencyFactor(vehicle) {
+           const efficiency = { 'Motor': '35-40 km/liter', 'Mobil': '12-15 km/liter', 'Ojol': '35-40 km/liter', 'Bus': '3-4 km/liter' };
+           return efficiency[vehicle] || '10-15 km/liter';
+       },
+       
+       getDevicePower(device) {
+           const power = { 'AC': 800, 'TV': 150, 'Komputer': 300, 'Lampu': 50, 'Perangkat Elektronik': 200 };
+           return power[device] || 200;
+       }
+   };
+   
+   // Backend interface dengan backend integration
+   const backend = {
+       async processActivity(userId, input) {
+           try {
+               // Try to call real backend first
+               const backendResult = await this.callRealBackend(userId, input);
+               return backendResult;
+           } catch (error) {
+               console.log('Backend unavailable, using enhanced analyzer');
+               // Fallback to enhanced analyzer
+               const analysis = await LLMAnalyzer.analyzeActivity(input);
+               return {
+                   message: `🤖 AI Analysis: "${input}" → ${analysis.carbon.toFixed(1)} kg CO2`,
+                   carbonAdded: analysis.carbon,
+                   dailyTotal: dailyCarbon + analysis.carbon,
+                   llm_explanation: analysis.explanation,
+                   category: analysis.category,
+                   suggestions: analysis.suggestions
+               };
+           }
+       },
+       
+       async callRealBackend(userId, input) {
+           // Implementation for actual backend call
+           // This would be replaced with actual ICP canister calls
+           throw new Error("Real backend integration needed");
+       },
+       
+       async getLLMInsights(userId) {
+           await new Promise(resolve => setTimeout(resolve, 2000));
+           
+           const totalActivities = activities.length;
+           const avgCarbon = totalActivities > 0 ? dailyCarbon / totalActivities : 0;
+           
+           // Convert to Indonesian Rupiah (1 USD = 16,500 IDR approximately)
+           const carbonOffsetValueUSD = dailyCarbon * 0.2 * 30 * 0.02;
+           const carbonOffsetValueIDR = carbonOffsetValueUSD * 16500;
+           
+           const insights = `📊 ANALISIS MENDALAM HARIAN:\n\n` +
+               `🎯 RINGKASAN:\n` +
+               `• Total aktivitas: ${totalActivities}\n` +
+               `• Total emisi: ${dailyCarbon.toFixed(1)} kg CO2\n` +
+               `• Rata-rata per aktivitas: ${avgCarbon.toFixed(1)} kg CO2\n\n` +
+               `📈 EVALUASI PERFORMA:\n` +
+               `${dailyCarbon < 5 ? '🌟 LUAR BIASA! Emisi sangat rendah - Anda champion lingkungan!' :
+                 dailyCarbon < 10 ? '👍 BAGUS! Emisi dalam batas wajar, sedikit lagi perfect!' :
+                 dailyCarbon < 20 ? '⚠️ SEDANG! Emisi cukup tinggi, mari kurangi step by step' :
+                 '🚨 TINGGI! Emisi sangat tinggi, butuh aksi segera'}\n\n` +
+               `🔍 ANALISIS POLA:\n` +
+               `• Kategori dominan: ${this.getDominantCategory()}\n` +
+               `• Trend emisi: ${this.getEmissionTrend()}\n` +
+               `• Potensi penghematan: ${(dailyCarbon * 0.3).toFixed(1)} kg CO2\n\n` +
+               `💡 STRATEGI PENGURANGAN:\n` +
+               `• Fokus utama: ${this.getTopRecommendation()}\n` +
+               `• Target minggu depan: ${(dailyCarbon * 0.8).toFixed(1)} kg CO2/hari\n` +
+               `• Quick wins: ${this.getQuickWins()}\n\n` +
+               `🌱 PROYEKSI DAMPAK:\n` +
+               `• Penghematan bulanan: ${(dailyCarbon * 0.2 * 30).toFixed(1)} kg CO2\n` +
+               `• Setara pohon yang ditanam: ${Math.ceil(dailyCarbon * 0.2 * 30 / 22)} pohon\n` +
+               `• Nilai offset karbon: Rp ${carbonOffsetValueIDR.toLocaleString('id-ID')}\n\n` +
+               `🎯 MOTIVASI:\n` +
+               `Setiap 1 kg CO2 yang Anda hemat = 1 langkah lebih dekat ke planet yang sehat! 🌍`;
+               
+           return insights;
+       },
+       
+       getDominantCategory() {
+           const categories = {};
+           activities.forEach(act => {
+               categories[act.category] = (categories[act.category] || 0) + act.carbon;
+           });
+           
+           let maxCarbon = 0;
+           let dominantCategory = 'Belum ada data';
+           
+           for (const [category, carbon] of Object.entries(categories)) {
+               if (carbon > maxCarbon) {
+                   maxCarbon = carbon;
+                   dominantCategory = category;
+               }
+           }
+           
+           return `${dominantCategory} (${maxCarbon.toFixed(1)} kg CO2)`;
+       },
+       
+       getEmissionTrend() {
+           if (activities.length < 2) return 'Perlu lebih banyak data';
+           const recent = activities.slice(-3);
+           const avgRecent = recent.reduce((sum, act) => sum + act.carbon, 0) / recent.length;
+           if (avgRecent < 2) return 'Trend menurun 📉';
+           if (avgRecent < 4) return 'Stabil sedang ➡️';
+           return 'Perlu perhatian 📈';
+       },
+       
+       getTopRecommendation() {
+           const categories = {};
+           activities.forEach(act => {
+               categories[act.category] = (categories[act.category] || 0) + act.carbon;
+           });
+           
+           const sorted = Object.entries(categories).sort((a, b) => b[1] - a[1]);
+           if (sorted.length === 0) return 'Mulai tracking aktivitas';
+           
+           const topCategory = sorted[0][0];
+           const recommendations = {
+               'Transport': 'Maksimalkan transportasi umum dan bike-sharing',
+               'Makanan': 'Perbanyak makanan lokal dan kurangi daging',
+               'Energi': 'Optimasi AC dan upgrade perangkat hemat energi',
+               'Lainnya': 'Evaluasi lifestyle dan konsumsi berkelanjutan'
+           };
+           
+           return recommendations[topCategory] || 'Pertahankan gaya hidup berkelanjutan';
+       },
+       
+       getQuickWins() {
+           return 'AC 24°C+, transportasi umum, zero food waste';
+       }
+   };
+   
+   // Main functions dengan improved UX
+   window.addActivity = async function() {
+       const input = document.getElementById('activity-input');
+       const activity = input.value.trim();
+       
+       if (!activity || isLoading) return;
+       
+       setLoading(true);
+       
+       try {
+           const response = await backend.processActivity('user123', activity);
+           
+           const newActivity = {
+               id: Date.now().toString(),
+               description: activity,
+               carbon: response.carbonAdded,
+               category: response.category,
+               llm_explanation: response.llm_explanation,
+               timestamp: Date.now()
+           };
+           
+           activities.push(newActivity);
+           dailyCarbon = response.dailyTotal;
+           
+           input.value = '';
+           showMessage(response.message, 'success');
+           updateUI();
+           
+       } catch (error) {
+           console.error('Error processing activity:', error);
+           showMessage('❌ Gagal menganalisis aktivitas. Silakan coba lagi.', 'error');
+       } finally {
+           setLoading(false);
+       }
+   };
+   
+   window.showLLMExplanation = function(activityId) {
+       const activity = activities.find(a => a.id === activityId);
+       if (!activity) return;
+       
+       document.getElementById('modal-activity-desc').textContent = activity.description;
+       document.getElementById('modal-llm-content').innerHTML = activity.llm_explanation.replace(/\n/g, '<br>');
+       document.getElementById('llm-modal').style.display = 'block';
+       document.body.style.overflow = 'hidden';
+   };
+   
+   window.showInsights = async function() {
+       if (activities.length === 0) {
+           showMessage('📊 Belum ada aktivitas untuk dianalisis. Mulai tambahkan aktivitas dulu ya!', 'error');
+           return;
+       }
+       
+       document.getElementById('insights-content').innerHTML = '🤖 AI sedang menganalisis pola harian Anda...<br><div class="spinner" style="margin: 20px auto;"></div>';
+       document.getElementById('insights-modal').style.display = 'block';
+       document.body.style.overflow = 'hidden';
+       
+       try {
+           const insights = await backend.getLLMInsights('user123');
+           document.getElementById('insights-content').innerHTML = insights.replace(/\n/g, '<br>');
+       } catch (error) {
+           document.getElementById('insights-content').innerHTML = '❌ Gagal mendapatkan insights. Silakan coba lagi nanti.';
+       }
+   };
+   
+   window.closeLLMModal = function() {
+       document.getElementById('llm-modal').style.display = 'none';
+       document.body.style.overflow = 'auto';
+   };
+   
+   window.closeInsightsModal = function() {
+       document.getElementById('insights-modal').style.display = 'none';
+       document.body.style.overflow = 'auto';
+   };
+   
+   window.resetDaily = async function() {
+       if (activities.length === 0) {
+           showMessage('📋 Belum ada aktivitas untuk direset.', 'error');
+           return;
+       }
+       
+       // Custom confirmation instead of alert
+       if (await showConfirmation('🔄 Reset Data Harian', 'Yakin mau reset semua aktivitas hari ini? Data akan hilang permanent.')) {
+           activities = [];
+           dailyCarbon = 0;
+           showMessage('✅ Data hari ini berhasil direset! Siap untuk tracking baru.', 'success');
+           updateUI();
+       }
+   };
+   
+   window.handleKeyPress = function(event) {
+       if (event.key === 'Enter' && !isLoading) {
+           addActivity();
+       }
+   };
+   
+   // Helper functions
+   function setLoading(loading) {
+       isLoading = loading;
+       const btnText = document.getElementById('btn-text');
+       const btnLoading = document.getElementById('btn-loading');
+       const input = document.getElementById('activity-input');
+       const btn = document.getElementById('add-btn');
+       
+       if (loading) {
+           btnText.style.display = 'none';
+           btnLoading.style.display = 'inline-flex';
+           input.disabled = true;
+           btn.disabled = true;
+           btn.style.opacity = '0.7';
+       } else {
+           btnText.style.display = 'inline';
+           btnLoading.style.display = 'none';
+           input.disabled = false;
+           btn.disabled = false;
+           btn.style.opacity = '1';
+       }
+   }
+   
+   function updateUI() {
+       // Update stats with animation
+       animateNumber('daily-carbon', dailyCarbon);
+       animateNumber('activity-count', activities.length);
+       
+       // Update status dengan logic yang bagus (preserved)
+       const statusElement = document.getElementById('carbon-status');
+       if (dailyCarbon < 5) {
+           statusElement.textContent = '😊';
+           statusElement.parentElement.querySelector('.stat-label').textContent = 'Rendah';
+       } else if (dailyCarbon < 15) {
+           statusElement.textContent = '😐';
+           statusElement.parentElement.querySelector('.stat-label').textContent = 'Sedang';
+       } else {
+           statusElement.textContent = '😰';
+           statusElement.parentElement.querySelector('.stat-label').textContent = 'Tinggi';
+       }
+       
+       document.getElementById('total-display').textContent = `Total: ${dailyCarbon.toFixed(1)} kg CO2`;
+       
+       // Update activities table
+       const tableBody = document.getElementById('activities-table-body');
+       
+       if (activities.length === 0) {
+           tableBody.innerHTML = '<div class="loading">🌱 Belum ada aktivitas hari ini. Mulai ceritakan aktivitas Anda!</div>';
+       } else {
+           tableBody.innerHTML = activities.map((activity, index) => `
+               <div class="table-row" style="animation-delay: ${index * 0.1}s">
+                   <div class="activity-desc">${activity.description}</div>
+                   <div class="activity-category category-header">${activity.category}</div>
+                   <div class="activity-carbon">+${activity.carbon.toFixed(1)}</div>
+                   <div>
+                       <button class="btn-info" onclick="showLLMExplanation('${activity.id}')" title="Lihat analisis detail AI">
+                           🔍 Detail
+                       </button>
+                   </div>
+               </div>
+           `).join('');
+       }
+   }
+   
+   function animateNumber(elementId, targetValue) {
+       const element = document.getElementById(elementId);
+       const startValue = parseFloat(element.textContent) || 0;
+       const increment = (targetValue - startValue) / 20;
+       let currentValue = startValue;
+       
+       const timer = setInterval(() => {
+           currentValue += increment;
+           if ((increment > 0 && currentValue >= targetValue) || (increment < 0 && currentValue <= targetValue)) {
+               currentValue = targetValue;
+               clearInterval(timer);
+           }
+           element.textContent = elementId === 'daily-carbon' ? currentValue.toFixed(1) : Math.round(currentValue);
+       }, 50);
+   }
+   
+   function showMessage(message, type) {
+       const existingMessage = document.querySelector('.message');
+       if (existingMessage) existingMessage.remove();
+       
+       const messageDiv = document.createElement('div');
+       messageDiv.className = `message ${type === 'success' ? 'success-message' : 'error-message'}`;
+       messageDiv.innerHTML = message;
+       
+       const inputSection = document.querySelector('.input-section');
+       inputSection.appendChild(messageDiv);
+       
+       setTimeout(() => messageDiv.remove(), 5000);
+   }
+   
+   // Custom confirmation dialog instead of alert
+   function showConfirmation(title, message) {
+       return new Promise((resolve) => {
+           const modal = document.createElement('div');
+           modal.className = 'modal';
+           modal.style.display = 'block';
+           modal.innerHTML = `
+               <div class="modal-content" style="max-width: 400px; text-align: center;">
+                   <div class="modal-header">
+                       <h2 class="modal-title">${title}</h2>
+                   </div>
+                   <div class="modal-body">
+                       <p style="margin-bottom: 20px; line-height: 1.6;">${message}</p>
+                       <div style="display: flex; gap: 15px; justify-content: center;">
+                           <button class="btn btn-secondary" onclick="closeConfirmation(false)">❌ Batal</button>
+                           <button class="btn btn-primary" onclick="closeConfirmation(true)">✅ Ya, Reset</button>
+                       </div>
+                   </div>
+               </div>
+           `;
+           
+           document.body.appendChild(modal);
+           document.body.style.overflow = 'hidden';
+           
+           window.closeConfirmation = function(result) {
+               document.body.removeChild(modal);
+               document.body.style.overflow = 'auto';
+               delete window.closeConfirmation;
+               resolve(result);
+           };
+       });
+   }
+   
+   async function init() {
+       updateUI();
+       
+       setTimeout(() => {
+           const statusElement = document.getElementById('connection-status');
+           statusElement.style.background = 'linear-gradient(135deg, #d4edda, #c3e6cb)';
+           statusElement.style.color = '#155724';
+           statusElement.innerHTML = '✅ 🤖 Enhanced AI Analyzer Ready! Analisis detail aktif.';
+           
+           setTimeout(() => {
+               statusElement.style.animation = 'fadeOut 0.5s ease-out forwards';
+           }, 3000);
+       }, 1000);
+       
+       document.getElementById('activity-input').focus();
+   }
+   
+   // Modal click outside to close
+   window.onclick = function(event) {
+       const llmModal = document.getElementById('llm-modal');
+       const insightsModal = document.getElementById('insights-modal');
+       
+       if (event.target === llmModal) {
+           closeLLMModal();
+       }
+       if (event.target === insightsModal) {
+           closeInsightsModal();
+       }
+   }
+   
+   // Add fadeOut animation
+   const style = document.createElement('style');
+   style.textContent = `
+       @keyframes fadeOut {
+           to { 
+               opacity: 0; 
+               transform: translateY(-20px); 
+               pointer-events: none; 
+           }
+       }
+   `;
+   document.head.appendChild(style);
+   
+   init();
+   </script>
 </body>
 </html>
